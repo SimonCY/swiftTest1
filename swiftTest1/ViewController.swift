@@ -8,12 +8,65 @@
 
 import UIKit
 
+
+extension ViewController {
+
+    @objc func cy_viewDidLoad() {
+        print(self.description)
+
+        demo7()
+
+        self.cy_viewDidLoad()
+    }
+
+    /** runtime */
+    public class func loadMethodSwizzing() {
+
+        /*
+         swift中方法交换只能在分类中使用，否则会循环调用
+         Swift代码中已经没有了Objective-C的运行时消息机制, 在代码编译时即确定了其实际调用的方法. 所以纯粹的Swift类和对象没有办法使用runtime, 更不存在method swizzling.
+         为了兼容Objective-C, 凡是继承NSObject的类都会保留其动态性, 依然遵循Objective-C的�运行时消息机制, 因此可以通过runtime获取其属性和方法, 实现method swizzling等功能.
+         但是新版swift已经无法再重写load方法，所以需要声明一个只会执行一次的类方法，在程序启动后手动调用来替代load方案
+         */
+
+        //动态绑定
+        objc_setAssociatedObject(self, &cy_associatedKeys.key0, "value0", .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        let value0 = objc_getAssociatedObject(self, &cy_associatedKeys.key0)
+        print("value0 is", (value0 ?? "nil"))
+
+        //方法拦截
+        let originalSelector = #selector(ViewController.viewDidLoad)
+        let swizzledSelector = #selector(ViewController.cy_viewDidLoad)
+
+        let originalMethod = class_getInstanceMethod(self, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
+        //在进行 Swizzling 的时候,需要用 class_addMethod 先进行判断一下原有类中是否有要替换方法的实现
+        let didAddMethod: Bool = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod!), method_getTypeEncoding(swizzledMethod!))
+        //如果 class_addMethod 返回 yes,说明当前类中没有要替换方法的实现,所以需要在父类中查找,这时候就用到 method_getImplemetation 去获取 class_getInstanceMethod 里面的方法实现,然后再进行 class_replaceMethod 来实现 Swizzing
+
+        if didAddMethod {
+            class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod!), method_getTypeEncoding(originalMethod!))
+        } else {
+            method_exchangeImplementations(originalMethod!, swizzledMethod!)
+        }
+
+    }
+
+    private struct cy_associatedKeys {
+
+        static var key0  = "cy_key0"
+        static var key1  = "cy_key1"
+
+    }
+}
+
+
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        demo2()
+        demo7()
     }
 
     /** 常量和变量 */
@@ -165,38 +218,15 @@ class ViewController: UIViewController {
         }
     }
 
-    /** runtime */
-    public class func loadMethodSwizzing() {
+    /** 字符串 */
+    func demo7() {
 
-        /*
-         Swift代码中已经没有了Objective-C的运行时消息机制, 在代码编译时即确定了其实际调用的方法. 所以纯粹的Swift类和对象没有办法使用runtime, 更不存在method swizzling.
-         为了兼容Objective-C, 凡是继承NSObject的类都会保留其动态性, 依然遵循Objective-C的�运行时消息机制, 因此可以通过runtime获取其属性和方法, 实现method swizzling等功能.
-         但是新版swift已经无法再重写load方法，所以需要声明一个只会执行一次的类方法，在程序启动后手动调用来替代load方案
-         */
-        
-        //动态绑定
-        objc_setAssociatedObject(self, &cy_associatedKeys.key0, "value0", .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        let value0 = objc_getAssociatedObject(self, &cy_associatedKeys.key0)
-        print("value0 is", (value0 ?? "nil"))
-        
-        //方法拦截
-        let before: Method = class_getInstanceMethod(ViewController.self, #selector(ViewController.viewDidLoad))!
-        let after: Method  = class_getInstanceMethod(ViewController.self, #selector(ViewController.cy_viewDidLoad))!
+        let str = "hello world"
 
+        for c in str {
 
-        method_exchangeImplementations(before, after)
-    }
-    
-    private struct cy_associatedKeys {
-        
-        static var key0  = "cy_key0"
-        static var key1  = "cy_key1"
-        
-    }
-
-    @objc func cy_viewDidLoad() {
-
-        print(self.description)
+            print(c)
+        }
     }
 }
 
