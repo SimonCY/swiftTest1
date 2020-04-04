@@ -8,15 +8,14 @@
 
 import UIKit
 
-
+//MARK: - runtime
 extension ViewController {
 
     @objc func cy_viewDidLoad() {
-        print(self.description)
 
-        demo7()
+        demo9()
 
-        self.cy_viewDidLoad()
+        cy_viewDidLoad()
     }
 
     /** runtime */
@@ -60,14 +59,15 @@ extension ViewController {
     }
 }
 
-
+//MARK: - cycle
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        demo7()
     }
+
+    //MARK: - demo
 
     /** 常量和变量 */
     func demo0() {
@@ -174,9 +174,16 @@ class ViewController: UIViewController {
 
             print("name is " + aName)
         }
+
+        //where 条件过滤
+        let url : NSURL? = NSURL(string: "https://www.baidu.com")
+        if let aUrl = url, aUrl.host == "www.baidu.com" && aUrl.host == "a" {
+
+            print("url is " + aUrl.absoluteString!)
+        }
     }
 
-    /** guard let */
+    /** guard  */
     func demo5() {
 
         let name : String? = "老王"
@@ -218,15 +225,273 @@ class ViewController: UIViewController {
         }
     }
 
-    /** 字符串 */
+
+    /**
+     for循环和范围定义
+     */
     func demo7() {
 
-        let str = "hello world"
+        //0 ~ 8
+        for i in 0..<9 {
 
-        for c in str {
+            print(i)
+        }
+
+        //0 ~ 9
+        for i in 0...9 {
+
+            print(i)
+        }
+
+    }
+
+    /**
+        字符串
+        swift中的字符串是结构体，oc中的字符串是继承自NSObject的对象
+        swift字符串支持直接遍历
+     */
+    func demo8() {
+
+        //声明
+        let str0 : String = "hello"
+        let str1 : String = "world"
+
+        //c字符长度
+        print("\(str0) 长度为 \(str0.lengthOfBytes(using: String.Encoding.utf8))")
+
+        //遍历
+        for c in str0 {
 
             print(c)
         }
+
+        //简单拼接
+        let str2 = str0 + str1
+        print(str2)
+        print(str0 + str1)
+        print(str0, str1)
+        print("\(str0) \(str1)")
+
+        //format
+        let h = 8, m = 5, s = 6
+        let str3 : String = String(format: "%02d:%02d:%02d", h, m, s)
+        let str4 : String = String(format: "%02d:%02d:%02d", arguments: [h, m, s])
+        print(str3)
+        print(str4)
+
+        //swift中字符串取子串、包含判断等处理建议转成nsstring再处理
+        let str5 = (str0 as NSString)
+        print(str5.substring(with: NSMakeRange(0, str5.length)))
+
+        //截取
+        let str6 : String = str0
+        let startIndex = str6.index(str6.startIndex, offsetBy: 2)
+        let endIndex = str6.endIndex
+        let range0 = startIndex..<endIndex
+
+        let compare = startIndex < endIndex
+
+        if compare == true {
+
+            print("\(startIndex) < \(endIndex)")
+        }
+
+        print(str6.substring(with: range0))  //旧方法
+        print(String(str6[range0]))      //新方法
+
+        //包含判断
+        let subStr = "ll"
+        if str6.contains(subStr) {
+
+            let range1 = str6.range(of: subStr)!
+            print(String(str6[range1]))
+        }
+        let equel = (str6 == "ll")
+
+        //替换
+        let str7 = str6.replacingOccurrences(of: "ll", with: "aa")
+        print(str7)
+
+        //拆分
+        let str8 : String = "a,d,c,d,v,f,,d,"
+        let subStrs0 = str8.components(separatedBy: ",,")
+        print(subStrs0)
+
+        let str9 : NSString  = str8 as NSString
+        let subStrs1 = str9.components(separatedBy: ",,")
+        print(subStrs1)
     }
+
+    /**
+     数组
+     */
+    func demo9() {
+
+        //oc中数组使用@[]，swift数组同样使用[]
+        let array0 = Array<Any>(arrayLiteral: "a", "b")
+        let array1 = [Any](arrayLiteral: "a", "b")
+        let array2 = ["a", "b"] as [Any]
+        print(array0, array1, array2)
+
+        //为数组设置容量
+        var array3 = [Any].init()
+        array3.reserveCapacity(5)
+        print(array3, array3.capacity)
+
+        //数组中可以直接存基本数据类型
+        let arr0 = ["a", "b", 10] as [Any]
+        print(arr0)
+
+        //数组中可以直接存结构体
+        let arr1 = ["a", "b", CGPoint.init(x: 0, y: 1), NSMakeRange(0, 1)] as [Any]
+        print(arr1)
+
+        //数组中存不同类型时需要强转为 [any], 存相同类型时不需要，系统会自动识别 [String], [Int]
+        let arr2 = [1, 2]
+        let arr3 = ["a", "b", "c"]
+        let arr4 = ["a", "b", CGPoint.init(x: 0, y: 1)] as [Any]
+        print(arr2, arr3, arr4)
+
+        //下标遍历
+        for index in 0..<arr4.count {
+
+            print(arr4[index])
+        }
+
+        //快速遍历
+        for obj in arr4 {
+
+            print(obj)
+        }
+
+        //枚举器遍历
+        for (index, obj) in arr4.enumerated() {
+
+            print("\(index) : '\(obj)'")
+        }
+
+        //声明：let声明的数组为不可变数组，var声明的数组为可变数组
+        let arr5 = ["a", "b", "c"] as [AnyObject]
+        var arr6 = [1, 2, 3] as [Any]
+        var arr7 = arr5 + arr6
+        print(arr5, arr6, arr7)
+
+        //读取，first、last读取方式读取的为一个可选项，不会造成数组越界，arr[index]可能造成数组越界
+        let obj0 = arr7[0]
+        let obj1 = arr7.first
+        print(obj0, obj1)
+
+        //包含判断(相同类型元素的数组判断比较容易) （自定义对象要想使用 ==判断 ，需要该对象遵循Equatable协议，所以[Any]类型的数组不能直接用contains）
+        if arr3.contains("a") {
+
+            print("\(arr3) contains \("a")")
+        }
+
+        //插入（swift数组中允许插入可选项）
+        arr7.insert(0, at: 3)
+        print(arr7)
+
+        arr7.append(4)
+        print(arr7)
+
+        let obj2 = URL(string: "a")
+        arr7.append(obj2)
+        print(arr7)
+
+        //修改
+        arr7[3] = "d"
+        print(arr7)
+
+        //删除
+        arr6.removeAll()
+        arr7.remove(at: arr7.endIndex - 1)
+        arr7.removeLast()
+        print(arr6, arr7)
+        arr7.removeAll(keepingCapacity: true)
+        print(arr7, arr7.capacity)
+
+        //交换
+        var arr8 = ["a", "b"]
+        arr8.swapAt(0, 1)
+        print(arr8)
+
+        var arr9 = ["a", "b"]
+        (arr9[0],arr9[1]) = (arr9[1],arr9[0])
+        print(arr9)
+    }
+
+    /** 字典 */
+    func demo10() {
+
+        //OC字典使用@{}，swift字典仍然使用[]
+        //OC字典只能存对象类型，swift字典可以存储任意类型
+        //OC字典可以在同一字典中使用多种类型的对象作为key，swift中这种情况需要使用anyhashable结构体
+        let dict0 = ["name" : "张三", "age" : 26, "location" : CGPoint(x: 10, y: 11), 50 : "num"] as [AnyHashable : Any]
+        print(dict0)
+
+        //可变字典为var，不可变字典为let
+        let dict1 = ["name" : "张三"]
+        let dict2 = ["sex" : "男"]
+        var dict3 = dict1
+        print(dict3)
+
+        //遍历
+        for (key, value) in dict0 {
+
+            print("\(key) : \(value)")
+        }
+
+        for (key, value) in dict0.reversed() {
+
+            print("\(key) : \(value)")
+        }
+
+        //读取
+        print("name : \(dict0["name"] ?? "no name")")
+
+        //包含判断，字典读出来的是可选项
+        if dict0.keys.contains("name") {
+
+            print(dict0["name"]!)
+        }
+
+        //合并只能通过遍历
+        for (key, value) in dict2 {
+
+            dict3[key] = value
+        }
+        print(dict3)
+
+        //插入、修改 (swift字典中允许插入可选项)
+        dict3["name"] = "李四"
+        print(dict3)
+
+        dict3["age"] = "18"
+        print(dict3)
+        dict3["age"] = nil
+        print(dict3)
+
+        //删除
+        dict3.removeValue(forKey: "sex")
+        print(dict3)
+
+        dict3.removeAll()
+        print(dict3)
+    }
+
+    /**
+     对象、类、函数、分类
+     */
+    func demo11() -> Void {
+
+        /*
+         函数返回值类型为空时，可以为：
+
+         func demo11() -> Void { }
+         func demo12() { }
+         func demo13() -> () { }
+         */
+    }
+
 }
 
