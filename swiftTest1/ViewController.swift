@@ -13,7 +13,7 @@ extension ViewController {
 
     @objc func cy_viewDidLoad() {
 
-        demo9()
+        print("cy_viewDidLoad")
 
         cy_viewDidLoad()
     }
@@ -62,9 +62,102 @@ extension ViewController {
 //MARK: - cycle
 class ViewController: UIViewController {
 
+    /**
+     懒加载：（swift中本质是一个闭包）
+
+        lazy 修饰属性时，会在第一次访问属性时执行闭包代码，将闭包返回值保存在 person 属性中
+        如果没有 lazy，会在init时就执行一次闭包，相当于普通成员变量的初始化
+        lazy 属性一但初始化后，会无视其他修改
+     */
+
+    var lazyProperty0 : FirstView = {
+
+         print("lazy load property0")
+         return FirstView()
+     }()
+
+    lazy var lazyProperty1 : FirstView = {
+
+        print("lazy load property1")
+        return FirstView()
+    } ()
+
+    //闭包变量是一段准备好的代码，调用时必须加 self.xxx，以使其在执行时准确绑定对象
+    lazy var lazyProperty2 : FirstView = self.lazyProperty2Init()
+//    lazy var lazyProperty2 : FirstView = { () -> FirstView in
+//
+//        print("lazy load property2")
+//        return FirstView()
+//    } ()
+
+    let lazyProperty2Init = { () -> FirstView in
+
+        print("lazy load property2")
+        return FirstView()
+    }
+
+    lazy var lazyProperty3 : FirstView = FirstView()
+
+    /**
+    getter & setter , swift 中很少使用 getter setter，getter 的替代者为计算型属性，setter 的替代者为 didSet
+     */
+    private var _menuView0 : FirstView?
+    var menuView0 : FirstView? {
+
+        get {
+
+            return _menuView0
+        }
+
+        set {
+
+            _menuView0 = newValue
+
+        }
+    }
+
+    var menuView1 : FirstView? {
+
+        didSet {
+
+
+        }
+    }
+
+    /**
+    swift 中属性分为计算型属性和存储型属性
+     readonly：
+        swift 中只写 getter 方法时，代表 readonly ， 什么都不写代表 readwrite
+        简写方式为：花括号中只写一个 return aVar
+        只提供l getter 的属性也叫做 计算型属性
+     */
+    var alertView0 : FirstView? {
+
+        get {
+
+            return FirstView()
+        }
+    }
+
+    var alertView1 : FirstView? {
+
+        //每次调用 getter ，都会执行 {} 中的代码，
+        return FirstView()
+    }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        print(lazyProperty0)
+        print(lazyProperty1)
+        print(lazyProperty2)
+        print(lazyProperty3)
     }
 
     //MARK: - demo
@@ -479,9 +572,7 @@ class ViewController: UIViewController {
         print(dict3)
     }
 
-    /**
-     对象、类、函数、分类
-     */
+    /** 函数 */
     func demo11() -> Void {
 
         /*
@@ -493,5 +584,22 @@ class ViewController: UIViewController {
          */
     }
 
+    /** 类、对象*/
+    func demo12 () {
+
+        view.backgroundColor = UIColor.blue
+
+        let subView = FirstView.init(frame: CGRect.zero)
+        subView.frame = CGRect(x: 20, y: 20, width: 50, height: 50)
+        view.addSubview(subView)
+
+        let stu = Student.init(dict: ["name" : "张三", "age" : 20, "grade" : "三年级", "number" : 436134])
+        print(stu.name, stu.age, stu.grade!, stu.number)
+        let stu0 = Student()
+        print("name of stu0 is \(stu0.name)")
+
+        let stu1 = Student(name : "张三")
+        print("name of stu1 is \(stu1.name)")
+    }
 }
 
