@@ -8,7 +8,28 @@
 
 import UIKit
 
+@objc protocol FirstViewDelegate2  {
+
+    func viewDidTouch()
+}
+
+
+@objc protocol FirstViewDelegate : FirstViewDelegate2  {
+    
+    func viewDidTouch()
+}
+
 class FirstView: UIView {
+
+    //弱引用时代理必须加@objc
+    weak var delegate : FirstViewDelegate?
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+
+        self.delegate?.viewDidTouch()
+    }
+
 
     /**
      对象的属性就应该是可变的

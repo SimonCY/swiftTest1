@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B651DB672443515000027D68 /* SoundTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B651DB662443515000027D68 /* SoundTool.swift */; };
+		B651DB6B24437C2300027D68 /* VideoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = B651DB6A24437C2300027D68 /* VideoTool.m */; };
 		B6DFED82243CB94200407A66 /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DFED81243CB94200407A66 /* FirstView.swift */; };
 		B6DFED84243CD28200407A66 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DFED83243CD28200407A66 /* Person.swift */; };
 		B6E4CF2E23EB0CCD009681D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E4CF2D23EB0CCD009681D3 /* AppDelegate.swift */; };
@@ -37,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B651DB662443515000027D68 /* SoundTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundTool.swift; sourceTree = "<group>"; };
+		B651DB6824437C2200027D68 /* swiftTest1-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swiftTest1-Bridging-Header.h"; sourceTree = "<group>"; };
+		B651DB6924437C2300027D68 /* VideoTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoTool.h; sourceTree = "<group>"; };
+		B651DB6A24437C2300027D68 /* VideoTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoTool.m; sourceTree = "<group>"; };
 		B6DFED81243CB94200407A66 /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
 		B6DFED83243CD28200407A66 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		B6E4CF2A23EB0CCD009681D3 /* swiftTest1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftTest1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,10 +114,14 @@
 				B6E4CF3123EB0CCD009681D3 /* ViewController.swift */,
 				B6DFED81243CB94200407A66 /* FirstView.swift */,
 				B6DFED83243CD28200407A66 /* Person.swift */,
+				B651DB662443515000027D68 /* SoundTool.swift */,
+				B651DB6924437C2300027D68 /* VideoTool.h */,
+				B651DB6A24437C2300027D68 /* VideoTool.m */,
 				B6E4CF3323EB0CCD009681D3 /* Main.storyboard */,
 				B6E4CF3623EB0CCD009681D3 /* Assets.xcassets */,
 				B6E4CF3823EB0CCD009681D3 /* LaunchScreen.storyboard */,
 				B6E4CF3B23EB0CCD009681D3 /* Info.plist */,
+				B651DB6824437C2200027D68 /* swiftTest1-Bridging-Header.h */,
 			);
 			path = swiftTest1;
 			sourceTree = "<group>";
@@ -202,6 +212,7 @@
 				TargetAttributes = {
 					B6E4CF2923EB0CCD009681D3 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					B6E4CF3F23EB0CCE009681D3 = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -268,7 +279,9 @@
 				B6DFED84243CD28200407A66 /* Person.swift in Sources */,
 				B6E4CF3223EB0CCD009681D3 /* ViewController.swift in Sources */,
 				B6DFED82243CB94200407A66 /* FirstView.swift in Sources */,
+				B651DB672443515000027D68 /* SoundTool.swift in Sources */,
 				B6E4CF2E23EB0CCD009681D3 /* AppDelegate.swift in Sources */,
+				B651DB6B24437C2300027D68 /* VideoTool.m in Sources */,
 				B6E4CF3023EB0CCD009681D3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,6 +455,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2K83MC6PMU;
 				INFOPLIST_FILE = swiftTest1/Info.plist;
@@ -451,6 +465,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mm.swiftTest1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swiftTest1/swiftTest1-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -460,6 +476,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2K83MC6PMU;
 				INFOPLIST_FILE = swiftTest1/Info.plist;
@@ -469,6 +486,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mm.swiftTest1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swiftTest1/swiftTest1-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

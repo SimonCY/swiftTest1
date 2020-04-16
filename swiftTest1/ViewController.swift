@@ -8,6 +8,25 @@
 
 import UIKit
 
+/*
+ swift和oc的区别：
+ 代码量明显减少
+ 类型判断更加严格
+ 权限控制更加精细
+ 由于高度封装所以错误提示有时候感觉莫名其妙
+ 可选项是一个很不适应的东西
+ 构造函数变化最大
+
+ swift和oc共用一套运行时系统
+
+ 混编时：
+ swift调用oc时，需要创建桥接文件targetName-Bridging-Header.h，并在其中import oc的头文件
+ oc 文件中若想调用swift，需要在当前文件引入 targetName-Swift.h
+ oc中无法使用swift中的特殊语法，例如 枚举
+ swift中对类型判断严格，不能非0即空，所以一些用于标志位的宏定义的使用需要严格注意
+ swift宏定义不能定义一个方法
+ */
+
 //MARK: - runtime
 extension ViewController {
 
@@ -60,7 +79,7 @@ extension ViewController {
 }
 
 //MARK: - cycle
-class ViewController: UIViewController {
+class ViewController: UIViewController, FirstViewDelegate {
 
     /**
      懒加载：（swift中本质是一个闭包）
@@ -98,6 +117,12 @@ class ViewController: UIViewController {
 
     lazy var lazyProperty3 : FirstView = FirstView()
 
+    var notLazyProperty : FirstView {
+
+        print("noLazyProperty loaded")
+        return FirstView()
+    }
+
     /**
     getter & setter , swift 中很少使用 getter setter，getter 的替代者为计算型属性，setter 的替代者为 didSet
      */
@@ -131,7 +156,7 @@ class ViewController: UIViewController {
         简写方式为：花括号中只写一个 return aVar
         只提供l getter 的属性也叫做 计算型属性
      */
-    var alertView0 : FirstView? {
+    weak var alertView0 : FirstView? {
 
         get {
 
@@ -149,8 +174,23 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //代理
+        let subView = FirstView(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
+        subView.delegate = self
+        self.view.addSubview(subView)
 
+        //OC混编
+        VideoTool.init()
     }
+
+    //MARK: - FirstViewDelegate
+
+    func viewDidTouch() {
+
+        print("subView did touched")
+    }
+
+    //MARK: - touch
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
@@ -158,6 +198,13 @@ class ViewController: UIViewController {
         print(lazyProperty1)
         print(lazyProperty2)
         print(lazyProperty3)
+
+        print(notLazyProperty)
+
+        let aSoundTool = SoundTool.shared
+        
+        print(aSoundTool)
+
     }
 
     //MARK: - demo
@@ -463,6 +510,7 @@ class ViewController: UIViewController {
             print("\(index) : '\(obj)'")
         }
 
+
         //声明：let声明的数组为不可变数组，var声明的数组为可变数组
         let arr5 = ["a", "b", "c"] as [AnyObject]
         var arr6 = [1, 2, 3] as [Any]
@@ -598,8 +646,57 @@ class ViewController: UIViewController {
         let stu0 = Student()
         print("name of stu0 is \(stu0.name)")
 
-        let stu1 = Student(name : "张三")
+        let stu1 = Student(name : "张三", block: {})
         print("name of stu1 is \(stu1.name)")
+    }
+    /**
+     枚举:
+        swift枚举支持声明整型(Integer)、浮点数(Float Point)、字符串(String)、布尔类型(Boolean)、嵌套枚举
+        swfit枚举支持像对象一样扩充 方法、计算型属性、静态方法
+        swift支持为枚举添加拓展，一般用于将枚举中的case和func分离，提高可读性
+        swift支持为枚举绑定Protocol
+        swift支持声明枚举时使用泛型
+     */
+
+    enum Direction: String {
+        case top = "top"
+        case left = "left"
+        case right = "right"
+        case bottom = "bottom"
+        
+        func introduced() -> String {
+
+            switch self {
+            case .top: return "top"
+            case .left: return "left"
+            case .right: return "right"
+            case .bottom: return "bottom"
+            }
+        }
+
+        static func introduced(name: Direction) -> String? {
+
+            if name == Direction.left {
+
+                return "left"
+            }
+            return nil
+        }
+    }
+    func demo13() {
+
+        var aDirection = Direction.left
+        aDirection = Direction.right
+
+        switch aDirection {
+
+        case Direction.left:
+            print("left")
+        case Direction.right:
+            print("right")
+
+        default: ()
+        }
     }
 }
 

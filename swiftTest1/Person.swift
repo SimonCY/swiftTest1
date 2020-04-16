@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+
+
 class Person : NSObject {
 
     @objc var name : String
@@ -27,10 +30,11 @@ class Person : NSObject {
      重载：
      子类重写父类中的某一方法，但参数表不相同
      */
-    convenience init(name : String) {
+    convenience init(name : String, block : () throws -> ()  ) {
 
         //convenience initializer 必须调用自身类中的其他初始化方法，并在最终必须调用一个 designated initializer；
         self.init(name : name, age : 0, sex : "unknown")
+
     }
     
     /**
@@ -80,6 +84,12 @@ class Person : NSObject {
 
 
 class Student : Person {
+
+    //class 修饰的类属性只用是计算型属性，不能为存储型属性
+    class var teacher : Person {
+
+        return Person()
+    }
 
     @objc var grade : String?
 
