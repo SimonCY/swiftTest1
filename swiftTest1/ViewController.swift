@@ -11,8 +11,7 @@ import UIKit
 /*
  swift和oc的区别：
  代码量明显减少
- 类型判断更加严格
- 权限控制更加精细，oc的灵活度更高，很容易造成代码的不规范，比如更容易调用私有api
+ 类型判断更加严格，权限控制更加精细，oc的灵活度更高，很容易无意识造成代码的不规范，swift能让程序员更加注重代码细节
  由于高度封装所以错误提示有时候感觉莫名其妙
  可选项是一个很不适应的东西
  构造函数变化大
@@ -182,6 +181,8 @@ class ViewController: UIViewController, FirstViewDelegate {
 
         //OC混编
         VideoTool.init()
+
+        try! self.demo14()
     }
 
     //MARK: - FirstViewDelegate
@@ -698,6 +699,45 @@ class ViewController: UIViewController, FirstViewDelegate {
 
         default: ()
         }
+    }
+
+    /**
+     网络请求和异常处理
+     */
+    func demo14() throws {
+
+        let url = URL(string: "http://www.weather.com.cn/data/sk/101010100.html")
+
+        URLSession.shared.dataTask(with: url!) { (data, _, error) in
+
+            /*
+             1、throw异常，这表示这个函数可能会抛出异常，无论作为参数的闭包是否抛出异常
+             2、rethrow异常，这表示这个函数本身不会抛出异常，但如果作为参数的闭包抛出了异常，那么它会把异常继续抛上去。
+             3、对throw函数，调用时需要加 try
+             */
+
+            //强行 try! 时程序员要负责，如果数据格式不正确，会崩溃
+            let result0 = try!JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
+
+            //普通 try  异常代码需要用 do{  try func() }catch{} 包起来
+            do {
+
+                let result = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
+
+                //类型判读用 xx is xx
+                if result is Dictionary<String, Any> {
+
+                    print(result)
+                }
+            } catch {
+
+                print("error")
+            }
+
+            //尝试 try? ，如果失败会返回nil，u不会崩
+            let result1 = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
+
+        }.resume()
     }
 }
 

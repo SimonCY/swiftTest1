@@ -108,18 +108,14 @@ class Student : Person {
     
     override init(name : String, age : Int, sex : String) {
 
-//        self.run()
+//       try self.run()
         print(self.number)
 
         super.init(name: name, age: age, sex: sex)
 
         print("Student init")
     }
-    
-    /*
-    1、throw异常，这表示这个函数可能会抛出异常，无论作为参数的闭包是否抛出异常
-    2、rethrow异常，这表示这个函数本身不会抛出异常，但如果作为参数的闭包抛出了异常，那么它会把异常继续抛上去。
-     */
+
     func run() throws -> Void {
 
 
