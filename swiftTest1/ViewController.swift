@@ -182,7 +182,7 @@ class ViewController: UIViewController, FirstViewDelegate {
         //OC混编
         VideoTool.init()
 
-        try! self.demo14()
+        try! self.demo15()
     }
 
     //MARK: - FirstViewDelegate
@@ -738,6 +738,51 @@ class ViewController: UIViewController, FirstViewDelegate {
             let result1 = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
 
         }.resume()
+    }
+
+    var completion: ((_ finished: Bool)->())?
+    /**
+     循环引用
+     */
+    func demo15() {
+
+        //方式一：使用weakself
+        weak var weakSelf = self
+
+        self.completion = { finished in
+
+            //闭包中对weakSelf进行强引用，？表示一但weakSelf为nil，则不再访问
+            print(weakSelf?.view as Any)
+        }
+
+
+        //方式二：使用[weak self]，表示闭包中对self的引用都是弱引用，与 __weak 类似，如果self被释放，则什么也不做，更安全
+        self.completion = {[weak self] finished in
+
+            print(self?.view as Any)
+        }
+
+        //方式d三：unowned 与 __unsafe__unretained 类似，如果sefl 被释放，同样会出现野指针
+        self.completion = {[unowned self] (finished: Bool) in
+
+            print(self.view as Any)
+        }
+
+        self.completion!(true)
+    }
+
+    /**
+     多线程
+     */
+    func demo16() {
+
+        DispatchQueue.global().async {
+
+        }
+
+        DispatchQueue.main.async {
+            
+        }
     }
 }
 
