@@ -325,7 +325,7 @@ class ViewController: UIViewController, FirstViewDelegate {
         }
     }
 
-    /** guard  */
+    /** guard let  */
     func demo5() {
 
         let name : String? = "老王"
@@ -335,7 +335,7 @@ class ViewController: UIViewController, FirstViewDelegate {
             print("no name")
         }
 
-        guard name != nil else {
+        guard let aName = name else {
 
             print("no name")
             return
