@@ -110,6 +110,7 @@ fileprivate var instance1 : SoundTool?
 
 /**
     swift 中的 dispatch_once 被弃用了，可以如下 extension 实现
+    extension中只能扩展计算属性，不能拓展存储性属性
  */
 public extension DispatchQueue {
 
