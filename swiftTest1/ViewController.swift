@@ -25,6 +25,8 @@ import UIKit
  oc中无法使用swift中的特殊语法，例如 枚举
  swift中对类型判断严格，不能非0即空，所以一些用于标志位的宏定义的使用需要严格注意
  swift宏定义不能定义一个方法
+ swift中尽量使用OC中的h数据类型
+ swift调用oc肯定不会出问题，但是oc调用swift不一定
  */
 
 //MARK: - runtime
@@ -658,6 +660,23 @@ class ViewController: UIViewController, FirstViewDelegate {
         swift支持为枚举添加拓展，一般用于将枚举中的case和func分离，提高可读性
         swift支持为枚举绑定Protocol
         swift支持声明枚举时使用泛型
+     
+     类和结构体和枚举的区别
+     
+        相同点：
+        1. 都可以有属性和方法. 枚举enum只能有计算属性,没存储属性
+        2. 都可以有函数
+        3. 类和结构体可以有构造函数
+     
+        不同点：
+        1. 类可以继承
+        2. 类方法可以使用class关键字，枚举和结构体只能使用static关键字
+        3. 类是引用类型，枚举和结构体是值类型
+     
+     嵌套类型：
+       
+        swift   可以在枚举类型、类和结构体中定义支持嵌套的类型，可以定义多级嵌套。
+        意义：以枚举为例，枚举通常是为了支持特定的类或结构体的功能而创建的，嵌套类型从编译的角度约束使得结构体、枚举等和对应类的关联性更高，提高代码可读性。
      */
 
     enum Direction: String {
@@ -686,10 +705,10 @@ class ViewController: UIViewController, FirstViewDelegate {
         }
     }
     func demo13() {
-
-        var aDirection = Direction.left
+        
+        var aDirection = ViewController.Direction.left
         aDirection = Direction.right
-
+        
         switch aDirection {
 
         case Direction.left:

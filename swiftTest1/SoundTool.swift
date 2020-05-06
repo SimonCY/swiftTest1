@@ -10,6 +10,10 @@ import UIKit
 
 class SoundTool: NSObject {
  
+    class ImageTool: NSObject {
+        
+        
+    }
 
     let name = "张三"
 
@@ -109,6 +113,8 @@ fileprivate var instance1 : SoundTool?
 
 /**
     swift 中的 dispatch_once 被弃用了，可以如下 extension 实现
+    extension中只能扩展计算属性，不能拓展存储性属性
+    extension中可以向类添加新的便利构造器，但是它们不能向类添加新的指定构造器或析构器
  */
 public extension DispatchQueue {
 
