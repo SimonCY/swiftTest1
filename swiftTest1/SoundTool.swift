@@ -16,9 +16,8 @@ class SoundTool: NSObject {
     //写单例时，记得屏蔽调外部的init方法调用，以避免其他途径创建
     private override init() { }
 
-    //方式1：静态常量
-    //oc中 static变量 分为全局static变量和局部static变量，而 swift 中没有局部 static变量 的概念（不允许在函数内部声明static变量，但是可以在结构体内部h声明，且swift中static的唯一作用就是让变量只能被初始化一次），且 static 既可修饰计算型属性也可以修饰存储型属性
-    //swift 中 static 修饰 func，等价于 class final ，表示禁止被重写的类函数
+    //方式1：静态常量 swift 中 static 修饰 func，等价于 class final ，表示禁止被重写的类函数
+    //oc中 static变量 分为全局static变量和局部static变量，而 swift 中没有局部 static变量 的概念（不允许在函数内部声明static变量，但是可以在结构体内部声明），且 static 既可修饰计算型属性也可以修饰存储型属性
     static let shared = SoundTool()
 
     /* 下面的代码等效于上面，这种方法其实就是懒加载的内部实现
