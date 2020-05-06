@@ -25,7 +25,7 @@ import UIKit
  oc中无法使用swift中的特殊语法，例如 枚举
  swift中对类型判断严格，不能非0即空，所以一些用于标志位的宏定义的使用需要严格注意
  swift宏定义不能定义一个方法
- 
+ swift中尽量使用OC中的h数据类型
  swift调用oc肯定不会出问题，但是oc调用swift不一定
  */
 
