@@ -117,7 +117,7 @@ class Student : Person {
         print("Student init")
     }
 
-    //让基本数据类型以以指针方式传递，而不是进行值拷贝，从而在函数内部可以修改外部的该变量
+    // inout: 让基本数据类型以以指针方式传递，而不是进行值拷贝，从而在函数内部可以修改外部的该变量
     func run(_ count: inout Int) throws -> Void {
 
 
