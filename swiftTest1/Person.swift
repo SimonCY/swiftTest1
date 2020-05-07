@@ -117,10 +117,74 @@ class Student : Person {
         print("Student init")
     }
 
-    // inout: 让基本数据类型以以指针方式传递，而不是进行值拷贝，从而在函数内部可以修改外部的该变量
-    func run(_ count: inout Int) throws -> Void {
+    /* inout: 让基本数据类型以以指针方式传递，而不是进行值拷贝，从而在函数内部可以修改外部的该变量 */
+    
+    /*
+     泛型：类型滞后确定的编程模式，可以减少沟通成本
+        
+        泛型函数：函数的参数或返回值类型使用泛型，而不是具体的类型
+            
+            func 函数名<泛型1, 泛型2, …>(形参1, 形参2, ...) -> 返回类型 {
+                函数体
+            }
+     
+        泛型类型：这些自定义类、结构体和枚举可以适用于任何类型，类似于Array和Dictionary
+     
+            // Array 的使用
+            let a1: Array<String> = ["a", "b"]
+            let a2: Array<Int>    = [1, 2]
 
+            // Dictionary 的使用
+            let d1: Dictionary<String, String> = ["a": "b"]
+            let d2: Dictionary<String, Int>    = ["a": 1]
+     
+        泛型约束：类型约束可以指定一个类型参数必须继承自指定类，或者符合一个特定的协议或协议组合，或者符合一些什么条件
+     
+            // 函数的协议、继承约束简单例子
+            func f1<T: Equatable, U: Hashable>(p1: T, p2: U) -> U {
+                return p2
+            }
+     
+            // 类或结构体中的泛型约束，
+            //写法1.1
+            struct CustomIterator<Element: Equatable> {
+                // ...
+            }
+            // 写法1.2
+            struct CustomIterator<Element> where Element: Equatable {
+                 // ...
+            }
 
+            // 写法2
+            extension CustomIterator where Element: Equatable {
+                func isExist(element: Element) -> Bool {
+                    return elements.contains(element)
+                }
+            }
+     
+        泛型下标：
+            
+            下标能够是泛型的，他们能够包含泛型where子句。你可以把占位符类型的名称写在 subscript后面的尖括号里，在下标代码体开始的标志的花括号之前写下泛型where子句
+     
+             extension CustomIterator {
+                 subscript<Indices: Sequence>(indices: Indices) -> [Element]
+                     where Indices.Iterator.Element == Int {
+                         var result = [Element]()
+                         for index in indices {
+                             result.append(self[index])
+                         }
+                         return result
+                 }
+             }
+             
+             let subIte = CustomIterator(elements: [1, 2, 3, 4])
+             // 打印结果：[1, 3]
+             print(subIte[[0, 2]])
+     
+     */
+    func run<A>(_ count: inout A) throws -> A {
+
+        return count
     }
 
    

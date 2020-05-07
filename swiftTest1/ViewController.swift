@@ -103,7 +103,32 @@ class ViewController: UIViewController, FirstViewDelegate {
         return FirstView()
     } ()
 
-    //闭包变量是一段准备好的代码，调用时必须加 self.xxx，以使其在执行时准确绑定对象
+    /*
+     闭包变量是一段准备好的代码，调用时必须加 self.xxx，以使其在执行时准确绑定对象，是引用类型
+     
+     $0表示闭包中第一个参数
+     
+     非逃逸闭包：
+     
+        非逃逸闭包的生命周期：1. 将闭包作为参数传递给函数，函数中运行闭包，退出函数。
+        在进入函数和退出函数的时候闭包的引用计数没有改变。
+     逃逸闭包：
+        
+        逃逸闭包在函数退出的时候仍然被其他对象持有，声明周期长于相关函数
+        swfit3.x后，如果需要使用逃逸类型的闭包，需要用 @escaping 修饰， 并且逃逸闭包中必须显式的使用self
+    
+        例：
+        var completionHandlers: [() -> Void] = []
+     
+        func someFunctionWithEscapingClosure(completionHandler: @escaping () -> Void) {
+     
+            completionHandlers.append(completionHandler)
+        }
+     
+     逃逸闭包的使用场景：
+        1. 异步调用: 如果需要调度队列中异步调用闭包， 这个队列会持有闭包的引用，至于什么时候调用闭包，或闭包什么时候运行结束都是不可预知的。
+        2. 存储: 需要存储闭包作为属性，全局变量或其他类型做稍后使用
+     */
     lazy var lazyProperty2 : FirstView = self.lazyProperty2Init()
 //    lazy var lazyProperty2 : FirstView = { () -> FirstView in
 //
