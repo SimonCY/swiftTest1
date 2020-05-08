@@ -138,6 +138,40 @@ class Student : Person {
             let d1: Dictionary<String, String> = ["a": "b"]
             let d2: Dictionary<String, Int>    = ["a": 1]
      
+        泛型协议：协议中的泛型不支持<T>的形式，而是在协议内部定义一个或多个 associatedtype 关联类型，来实现泛型功能
+     
+            例：
+                protocol ObservebleType {
+                    associatedtype Element
+                    associatedtype Element2: Comparable
+                    
+                    func removeFirst() -> Self.Element?
+                    func add(item: Element)
+                }
+                //实体类型
+                class Observeble<T: Comparable>: ObservebleType {
+                    // 实体类型需要实现具体类型
+                    typealias Element = T //方式1
+                    typealias Element2 = Int //方式2
+                    
+                    var ts: [T]
+                    init(t: T) {
+                        ts = [t]
+                    }
+                    
+                    func add(item: T) {
+                        ts.append(item)
+                    }
+                    
+                    func removeFirst() -> T? {
+                        guard ts.count > 0 else {
+                            return nil
+                        }
+                        return ts.remove(at: 0)
+                    }
+                }
+                
+     
         泛型约束：类型约束可以指定一个类型参数必须继承自指定类，或者符合一个特定的协议或协议组合，或者符合一些什么条件
      
             // 函数的协议、继承约束简单例子
